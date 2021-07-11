@@ -1,29 +1,32 @@
 package fr.lernejo.navy_battle;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
 public class Launcher {
-    public static void main(String[] args) throws IOException {
-        ExecutorService myservstart = Executors.newFixedThreadPool(1);
-        HttpServer battleserv = HttpServer.create(new InetSocketAddress(9876), 0);
-        battleserv.setExecutor(myservstart);
-        battleserv.createContext("/ping", httpExchange -> {
-            String body = "Hello";
-            httpExchange.sendResponseHeaders(200, body.length());
-            try (OutputStream os = httpExchange.getResponseBody()) {
-                os.write(body.getBytes());
-            }
-        });
-        battleserv.start();
-        //return battleserv;
-    }
 
+
+    public static void main(String[] args) {
+        Hello myhello = new Hello();
+        Startserv myserv = new Startserv();
+        HttpServer battlerserv = myserv.startserv();
+        myhello.run("/ping",battlerserv);
+        battlerserv.start();
+        }
 }
 
